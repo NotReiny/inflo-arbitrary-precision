@@ -194,9 +194,9 @@ class inflo {
         let a = this.__copy__();
         return a.ln().divide(new inflo("10").ln());
     }
-    pow(o) {
+pow(o) {
         let b = o instanceof inflo ? o : new inflo(o);
-
+        
         // Handle 0^b
         if (this.isz) {
             if (b.man <= 0n) throw new Error("0^0 or 0^negative is undefined");
@@ -218,7 +218,7 @@ class inflo {
         if (this.man < 0n) {
             throw new Error("Negative base with fractional exponent results in a complex number");
         }
-
+        
         return this.ln().times(b).exp();
     }
     floor() {
@@ -337,13 +337,13 @@ class inflo {
         // isz (is zero) doesn't change when negating
         return x;
     }
-    // Helper: Exponentiation by Squaring
+// Helper: Exponentiation by Squaring
     __intPow__(n) {
         let x = this.__copy__();
         if (n < 0n) {
             return new inflo("1").divide(x.__intPow__(-n));
         }
-
+        
         let res = new inflo("1");
         while (n > 0n) {
             if (n % 2n === 1n) res = res.times(x);
