@@ -195,9 +195,32 @@ class inflo {
         return a.ln().divide(new inflo("10").ln());
     }
     pow(o) {
-        let a = this.__copy__();
         let b = o instanceof inflo ? o : new inflo(o);
-        return a.ln().times(b).exp()
+
+        // Check if the exponent is actually an integer
+        // If it is, use the much more accurate Squaring method
+        if (b.minus(b.floor()).isz) {
+            let n = BigInt(b.trunc().toString()); // Simplify to BigInt
+            let base = this.__copy__();
+            let res = new inflo("1");
+
+            // Handle negative exponents
+            if (n < 0n) {
+                base = new inflo("1").divide(base);
+                n = -n;
+            }
+
+            // Exponentiation by Squaring
+            while (n > 0n) {
+                if (n % 2n === 1n) res = res.times(base);
+                base = base.times(base);
+                n /= 2n;
+            }
+            return res;
+        }
+
+        // Fallback to ln/exp for fractional exponents
+        return this.ln().times(b).exp();
     }
     floor() {
         if (this.isz) return new inflo("0");
