@@ -246,10 +246,28 @@ class inflo {
         let b = o instanceof inflo ? o : new inflo(o);
         if (b.isz) throw new Error("division by zero");
 
-        // Increase internal precision temporarily if 'this' is much larger than 'b'
-        // Or, use the current logic but be aware of the 'prec' limit.
-        let quotient = this.divide(b).floor();
-        return this.minus(b.times(quotient));
+        let aMan = this.man;
+        let bMan = b.man;
+        let aExp = this.e;
+        let bExp = b.e;
+
+        // Align exponents to the lower one to treat them as integers
+        if (aExp > bExp) {
+            aMan *= 10n ** (aExp - bExp);
+            aExp = bExp;
+        } else if (bExp > aExp) {
+            bMan *= 10n ** (bExp - aExp);
+        }
+
+        // Use native BigInt modulo
+        let resMan = aMan % bMan;
+
+        // Create result
+        let res = new inflo("0");
+        res.man = resMan;
+        res.e = aExp;
+        res.__fix__();
+        return res;
     }
     toString() {
         if (this.isz) return "0";
