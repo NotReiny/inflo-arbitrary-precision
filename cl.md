@@ -7,8 +7,9 @@
   * Subtraction    `minus()`
   * Multiplication `times()`
   * Division       `divide()`
-### Version 1.0.2: Stringify
+### Version 1.0.2: Stringify and Number rounding
   * Stringify      `toString()`
+  * Normalization round half up
 ## Version 1.1: Math functions
   * Comparison     `compare()`
   * Square root    `sqrt()`
