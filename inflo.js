@@ -112,7 +112,7 @@ class inflo {
 
         // 1. Handle negative exponents: e^(-x) = 1 / e^x
         if (this.man < 0n) {
-            return new inflo(1).divide(this.__negate__().ePow());
+            return new inflo(1).divide(this.__negate__().exp());
         }
 
         // 2. Argument Reduction (Scaling and Squaring)
