@@ -31,7 +31,7 @@
   * Ceiling        `ceil()`
   * Trunc          `trunc()`
   * Modulo         `mod()`
-### Version 1.2: Trigonometry
+## Version 1.2: Trigonometry
   * Sine           `sin()`
   * Cosine         `cos()`
   * Tangent        `tan()`
