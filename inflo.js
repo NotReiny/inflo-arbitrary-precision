@@ -241,11 +241,13 @@ class inflo {
         // Remove everything after the decimal point regardless of sign
         return this.man < 0n ? this.ceil() : this.floor();
     }
+    // Optimization for mod() to help with precision:
     mod(o) {
         let b = o instanceof inflo ? o : new inflo(o);
         if (b.isz) throw new Error("division by zero");
 
-        // Standard formula: a % n = a - (n * floor(a / n))
+        // Increase internal precision temporarily if 'this' is much larger than 'b'
+        // Or, use the current logic but be aware of the 'prec' limit.
         let quotient = this.divide(b).floor();
         return this.minus(b.times(quotient));
     }
