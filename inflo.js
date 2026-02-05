@@ -336,7 +336,7 @@ class inflo {
 
     cos() {
         if (this.isz) return new inflo("1");
-        return this.minus(inflo.PI.divide(2)).sin().__negate__();
+        return this.plus(inflo.PI.divide(2)).sin();
     }
 
     tan() {
@@ -382,6 +382,59 @@ class inflo {
         const rest = s.slice(1);
         const expSign = trueExp >= 0 ? "" : ""; // optional: standard plus sign
         return `${sign}${firstDigit}${rest ? "." + rest : ""}e${expSign}${trueExp}`;
+    }
+
+    asin() {
+        // Identity: asin(x) = atan(x / sqrt(1 - x^2))
+        if (this.abs().compare("1") > 0) throw new Error("asin domain error");
+        if (this.compare("1") === 0) return inflo.PI.divide("2");
+        if (this.compare("-1") === 0) return inflo.PI.divide("2").__negate__();
+
+        let x = this.__copy__();
+        let denom = new inflo("1").minus(x.times(x)).sqrt();
+        return x.divide(denom).atan();
+    }
+
+    acos() {
+        // Identity: acos(x) = PI/2 - asin(x)
+        return inflo.PI.divide("2").minus(this.asin());
+    }
+
+    atan() {
+        if (this.isz) return new inflo("0");
+
+        // 1. Handle negative: atan(-x) = -atan(x)
+        if (this.man < 0n) return this.abs().atan().__negate__();
+
+        // 2. Argument Reduction
+        // If x > 1, use atan(x) = PI/2 - atan(1/x)
+        if (this.compare("1") > 0) {
+            return inflo.PI.divide("2").minus(new inflo("1").divide(this).atan());
+        }
+
+        // 3. Further reduction: atan(x) = 2 * atan(x / (1 + sqrt(1 + x^2)))
+        // This keeps the Taylor series in a highly convergent range (< 0.5)
+        let x = this.__copy__();
+        const threshold = new inflo("0.5");
+        if (x.compare(threshold) > 0) {
+            let halfAngleArg = x.divide(new inflo("1").plus(x.times(x).plus("1").sqrt()));
+            return halfAngleArg.atan().times("2");
+        }
+
+        // 4. Taylor Series: x - x^3/3 + x^5/5 - ...
+        let sum = x.__copy__();
+        let xSq = x.times(x);
+        let term = x.__copy__();
+        let i = 3n;
+        while (true) {
+            term = term.times(xSq);
+            let step = term.divide(i);
+            let prevSum = sum.__copy__();
+            sum = ((i / 2n) % 2n === 1n) ? sum.minus(step) : sum.plus(step);
+            if (sum.compare(prevSum) === 0) break;
+            i += 2n;
+        }
+        return sum;
     }
 
     __copy__() {
