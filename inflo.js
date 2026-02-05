@@ -109,7 +109,11 @@ class inflo {
         if (this.man < 0n) throw new Error("not a number");
         let a = this.__copy__();
         let prevA = new inflo("-1");
+
+        // Divide e by 2 for efficiency
         a.e = (a.e + inflo.prec) / 2n - inflo.prec;
+
+        // Use Newton-Raphson method
         while (a.compare(prevA)) {
             prevA = a.__copy__();
             a = (new inflo(1).divide(2)).times(a.plus(this.divide(a)));
