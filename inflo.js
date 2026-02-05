@@ -19,17 +19,19 @@ class inflo {
         const sign = g.s === "-" ? -1n : 1n;
         const expSign = g.es === "-" ? -1n : 1n;
         this.e = 0n;
-        // Fractional part as a string
+        // Extract fraction
         let fPart = g.f ?? g.f2 ?? "";
-        // Combine integer and fraction into a single string without decimal point
+
+        // Combine integer with fraction
         let digits = (g.i ?? "0") + fPart;
-        digits = digits.replace(/^0+/, ""); // remove leading zeros
+        digits = digits.replace(/^0+/, ""); // Remove leading zeros
         this.man = BigInt(digits || 0);
         this.e = expSign * BigInt(g.e ?? 0) - BigInt(fPart.length);
         this.man *= sign;
         this.isz = false;
         this.__fix__();
     }
+
     // Improved Alignment in plus()
     plus(o) {
         let a = this.__copy__();
@@ -39,6 +41,7 @@ class inflo {
         // Work with copies to avoid mutating originals
         let arg1 = a;
         let arg2 = b;
+
         // Always make arg1 the one with the larger exponent
         if (arg2.e > arg1.e) {
             [arg1, arg2] = [arg2, arg1];
@@ -60,17 +63,22 @@ class inflo {
         // 1. Efficiently convert 'o' to an inflo instance
         let b = o instanceof inflo ? o : new inflo(o);
         // 2. A - B is the same as A + (-B)
+
         // This allows us to reuse the 'plus' logic entirely
         return this.plus(b.__negate__());
     }
+
     times(o) {
         let a = this.__copy__();
         let b = new inflo(o);
+
+        // Directly multiply
         b.man *= a.man;
         b.e += a.e;
         b.__fix__();
         return b;
     }
+
     divide(o) {
         let a = this.__copy__();
         let b = new inflo(o);
@@ -82,17 +90,20 @@ class inflo {
         a.__fix__();
         return a;
     }
+
     compare(o) {
         let b = o instanceof inflo ? o : new inflo(o);
         if (this.isz && b.isz) return 0;
         if (this.man > 0n && b.man <= 0n) return 1;
         if (this.man < 0n && b.man >= 0n) return -1;
+
         // Compare based on exponent and mantissa
         // Note: requires both to be normalized via __fix__
         if (this.e > b.e) return this.man > 0n ? 1 : -1;
         if (this.e < b.e) return this.man > 0n ? -1 : 1;
         return this.man > b.man ? 1 : (this.man < b.man ? -1 : 0);
     }
+
     sqrt() {
         if (this.isz) return new inflo("0");
         if (this.man < 0n) throw new Error("not a number");
