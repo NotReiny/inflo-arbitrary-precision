@@ -346,44 +346,6 @@ class inflo {
         return s.divide(c);
     }
 
-    toString() {
-        if (this.isz) return "0";
-
-        // 1. Get the absolute mantissa and the sign
-        let s = (this.man < 0n ? -this.man : this.man).toString();
-        const sign = this.man < 0n ? "-" : "";
-
-        // 2. Calculate the 'true' exponent 
-        // Since __fix__ ensures s.length is always prec + 1 (e.g., 25 digits),
-        // the value is (mantissa / 10^prec) * 10^e
-        // True Exponent = e + (s.length - 1)
-        const trueExp = this.e + BigInt(s.length) - 1n;
-
-        // 3. Remove trailing zeros for a cleaner look
-        s = s.replace(/0+$/, "");
-
-        // 4. Determine format: Fixed vs Scientific
-        // Use Fixed if exponent is reasonably small (e.g., between -6 and 15)
-        if (trueExp > -7n && trueExp < 21n) {
-            if (trueExp >= 0n) {
-                // Number >= 1 (e.g., 123.45)
-                const intPart = s.slice(0, Number(trueExp) + 1).padEnd(Number(trueExp) + 1, "0");
-                const fracPart = s.slice(Number(trueExp) + 1);
-                return `${sign}${intPart}${fracPart ? "." + fracPart : ""}`;
-            } else {
-                // Number < 1 (e.g., 0.00123)
-                const leadingZeros = "0".repeat(Math.abs(Number(trueExp)) - 1);
-                return `${sign}0.${leadingZeros}${s}`;
-            }
-        }
-
-        // 5. Fallback: Scientific Notation (e.g., 1.23e+10)
-        const firstDigit = s[0];
-        const rest = s.slice(1);
-        const expSign = trueExp >= 0 ? "" : ""; // optional: standard plus sign
-        return `${sign}${firstDigit}${rest ? "." + rest : ""}e${expSign}${trueExp}`;
-    }
-
     asin() {
         // Identity: asin(x) = atan(x / sqrt(1 - x^2))
         if (this.abs().compare("1") > 0) throw new Error("asin domain error");
@@ -435,6 +397,44 @@ class inflo {
             i += 2n;
         }
         return sum;
+    }
+
+    toString() {
+        if (this.isz) return "0";
+
+        // 1. Get the absolute mantissa and the sign
+        let s = (this.man < 0n ? -this.man : this.man).toString();
+        const sign = this.man < 0n ? "-" : "";
+
+        // 2. Calculate the 'true' exponent 
+        // Since __fix__ ensures s.length is always prec + 1 (e.g., 25 digits),
+        // the value is (mantissa / 10^prec) * 10^e
+        // True Exponent = e + (s.length - 1)
+        const trueExp = this.e + BigInt(s.length) - 1n;
+
+        // 3. Remove trailing zeros for a cleaner look
+        s = s.replace(/0+$/, "");
+
+        // 4. Determine format: Fixed vs Scientific
+        // Use Fixed if exponent is reasonably small (e.g., between -6 and 15)
+        if (trueExp > -7n && trueExp < 21n) {
+            if (trueExp >= 0n) {
+                // Number >= 1 (e.g., 123.45)
+                const intPart = s.slice(0, Number(trueExp) + 1).padEnd(Number(trueExp) + 1, "0");
+                const fracPart = s.slice(Number(trueExp) + 1);
+                return `${sign}${intPart}${fracPart ? "." + fracPart : ""}`;
+            } else {
+                // Number < 1 (e.g., 0.00123)
+                const leadingZeros = "0".repeat(Math.abs(Number(trueExp)) - 1);
+                return `${sign}0.${leadingZeros}${s}`;
+            }
+        }
+
+        // 5. Fallback: Scientific Notation (e.g., 1.23e+10)
+        const firstDigit = s[0];
+        const rest = s.slice(1);
+        const expSign = trueExp >= 0 ? "" : ""; // optional: standard plus sign
+        return `${sign}${firstDigit}${rest ? "." + rest : ""}e${expSign}${trueExp}`;
     }
 
     __copy__() {
