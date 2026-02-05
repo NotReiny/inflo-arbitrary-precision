@@ -35,5 +35,8 @@
   * Sine           `sin()`
   * Cosine         `cos()`
   * Tangent        `tan()`
-### Version 1.2.1: Absolute
+### Version 1.2.1: Absolute and the inverse
   * Absolute value `abs()`
+  * Inverse sine   `asin()`
+  * Inverse cosine `acos()`
+  * Inverse tangent`atan()`
