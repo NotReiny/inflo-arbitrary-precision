@@ -22,7 +22,7 @@
   * Negate         `__negate()`
 ### Version 1.1.2: Mathematical constants
   * Pi             `inflo.PI`
-  * Euler's Number `inflo.E`
+  * Euler's number `inflo.E`
   * Log 10         `inflo.LN10`
   * Log 2          `info.LN2`
   * Square root 2  `inflo.SQRT2`
@@ -35,3 +35,5 @@
   * Sine           `sin()`
   * Cosine         `cos()`
   * Tangent        `tan()`
+### Version 1.2.1: Absolute
+  * Absolute value `abs()`
