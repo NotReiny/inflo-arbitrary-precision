@@ -196,7 +196,7 @@ class inflo {
         }
         // Fractional exponent logic: a^b = exp(b * ln(a))
         if (this.man < 0n) {
-            throw new Error("Negative base with fractional exponent results in a complex number");
+            throw new Error("negative base with fractional exponent");
         }
         return this.ln().times(b).exp();
     }
@@ -279,12 +279,12 @@ class inflo {
     }
     cos() {
         if (this.isz) return new inflo("1");
-        return this.minus(inflo.PI.divide(2)).sin()
+        return this.minus(inflo.PI.divide(2)).sin().__negate__();
     }
     tan() {
         let s = this.sin();
         let c = this.cos();
-        if (c.isz) throw new Error("Tangent undefined (division by zero)");
+        if (c.isz) throw new Error("tangent undefined (division by zero)");
         return s.divide(c);
     }
     toString() {
@@ -435,4 +435,4 @@ class inflo {
         return new inflo("5").sqrt().plus("1").divide("2");
     }
 }
-inflo.recompute(); // Do not remove!
+inflo.recompute(); // Initialize constants
