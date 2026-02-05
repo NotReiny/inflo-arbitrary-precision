@@ -305,6 +305,13 @@ class inflo {
         return res;
     }
 
+    abs() {
+        if (this.isz || this.man >= 0n) {
+            return this.__copy__();
+        }
+        return this.__negate__();
+    }
+
     sin() {
         if (this.isz) return new inflo("0");
 
