@@ -456,16 +456,17 @@ class inflo {
     // Helper: Exponentiation by Squaring
     __intPow__(n) {
         let x = this.__copy__();
-        if (n.compare("0") === -1) {
+        let en = n.e >= 0n ? n.man * 10n ** n.e : n.man / 10n ** -n.e;
+        if (n.man < 0n) {
             return new inflo("1").divide(x.__intPow__(n.__negate__()));
         }
 
         let res = new inflo("1");
 
-        while (n.compare("0") === 1) {
-            if (n.mod("2").compare("1") === 0) res = res.times(x);
+        while (en > 0n) {
+            if (en % 2n === 1n) res = res.times(x);
             x = x.times(x);
-            n = n.divide("2").trunc();
+            en = en / 2n;
         }
 
         return res;
