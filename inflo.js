@@ -205,7 +205,12 @@ class inflo {
 
     log10() {
         let a = this.__copy__();
-        return a.ln().divide(new inflo("10").ln());
+        return a.ln().divide(inflo.LN10);
+    }
+
+    log2() {
+        let a = this.__copy__();
+        return a.ln().divide(inflo.LN2);
     }
 
     pow(o) {
