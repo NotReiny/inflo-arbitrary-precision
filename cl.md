@@ -40,3 +40,5 @@
   * Inverse sine   `asin()`
   * Inverse cosine `acos()`
   * Inverse tangent`atan()`
+### Version 1.2.2: More logx
+  * Log base-2     `log2()`
