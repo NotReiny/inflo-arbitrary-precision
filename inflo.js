@@ -301,6 +301,7 @@ class inflo {
 
         // Use native BigInt modulo
         let resMan = aMan % bMan;
+        resMan = resMan < 0n ? resMan + bMan : resMan
 
         // Create result
         let res = new inflo("0");
