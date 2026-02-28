@@ -231,6 +231,9 @@ class inflo {
             let n = b.trunc(); // Get integer value
             return this.__intPow__(n);
         }
+        if (b.compare("0.5") == 0) {
+            return this.sqrt();
+        }
 
         // Fractional exponent logic: a^b = exp(b * ln(a))
         if (this.man < 0n) {
