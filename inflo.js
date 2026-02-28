@@ -231,7 +231,7 @@ class inflo {
             let n = b.trunc(); // Get integer value
             return this.__intPow__(n);
         }
-        if (b.compare("0.5") == 0) {
+        if (b.compare("0.5") === 0) {
             return this.sqrt();
         }
 
