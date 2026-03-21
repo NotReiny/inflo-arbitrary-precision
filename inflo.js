@@ -83,9 +83,9 @@ class inflo {
         let a = this.__copy__();
         let b = new inflo(o);
         if (b.isz) throw new Error("division by zero");
-        a.man *= 10n ** (inflo.prec + 1n);
+        a.man *= 10n ** (inflo.prec + 2n);
         a.man /= b.man;
-        a.e -= inflo.prec + 1n;
+        a.e -= inflo.prec + 2n;
         a.e -= b.e;
         a.__fix__();
         return a;
