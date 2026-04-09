@@ -42,3 +42,7 @@
   * Inverse tangent`atan()`
 ### Version 1.2.2: More logx
   * Log base-2     `log2()`
+## Version 1.3: Hyperbole
+  * Hyperbole sine `sinh()`
+  * Hyperbole cos  `cosh()`
+  * Hyperbole tan  `tan()`
