@@ -407,6 +407,20 @@ class inflo {
         return sum;
     }
 
+    sinh() {
+        return this.exp().minus(this.__negate__().exp()).divide(2);
+    }
+
+    cosh() {
+        return this.exp().plus(this.__negate__().exp()).divide(2);
+    }
+
+    tanh() {
+        let s = this.sinh();
+        let c = this.cosh();
+        return s.divide(c);
+    }
+
     toString() {
         if (this.isz) return "0";
 
@@ -581,3 +595,5 @@ class inflo {
     }
 }
 inflo.recompute(); // Initialize constants
+
+window.inflo = inflo
